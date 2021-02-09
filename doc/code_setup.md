@@ -26,7 +26,7 @@ You can install the toolkit by running:
 pip install sap_toolkit
 ```
 
-The next steps are only required if you wish to run the illustrative baseline examples. For an API reference of the toolkit, you can check out [this]() page. You can also check out the illustrative baseline examples to see how the toolkit API is used. 
+The next steps are only required if you wish to run the illustrative baseline examples. For more details about the toolkit, you can check out [this](https://github.com/karthiksharma98/sap-toolkit) page. You can also check out the illustrative baseline examples in this repo to see how the toolkit API is used. 
 
 ## Installing dependencies to run illustrative examples
 
@@ -107,9 +107,9 @@ The parameters for the various scripts are explained below:
 
 ## Setup verification
 
-If you have set up correctly, running `start_server.sh` followed by  `start_client.sh` and then typing `evaluate results.json` on the evaluation server CLI once the second script has finished running should be able to get you an AP of ~15.5 on the validation set: (This number may vary based on hardware. We obtain this baseline on a Tesla V100 GPU on an AWS p3.2x instance, for a Mask-RCNN-FPN-50 model with scale 1.0).
+If you have set up correctly, running `start_server.sh` followed by  `start_client.sh` and then typing `evaluate results.json` on the evaluation server CLI once the second script has finished running should be able to get you an AP of ~15.0 on the validation set: (This number may vary based on hardware. We obtain this baseline on a Tesla V100 GPU on an AWS p3.2x instance, for a Mask-RCNN-FPN-50 model with scale 1.0).
 ```
-Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.155
+Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.149
 ```
 
 ## Other details

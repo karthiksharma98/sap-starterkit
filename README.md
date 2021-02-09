@@ -14,7 +14,7 @@ This repo contains the starter kit for the Streaming Perception challenge to be 
 
 The illustrative examples (also used to obtain the baseline numbers on the leaderboard for the challenge) show you how to use the API provided by our `sap_toolkit` to communicate with the evaluation server. You can take a look at the python code provided in `det_baseline.py` and `forecast_baseline.py` to see our implementations. There are also versions of these scripts (ending in `_perf.py`) that measure a few runtime metrics such as detection time, association time and forecasting time.
 
-Further documentation on the `sap_toolkit` can be found [here]()
+Further documentation on the `sap_toolkit` can be found [here](https://github.com/karthiksharma98/sap-toolkit)
 
 
 ## Upload your results to the evaluation server:
