@@ -92,12 +92,6 @@ def detector_process():
             runtime.max(),
         ))
 
-    print("send-result mean/min/max = ", np.mean(send_result_times), np.min(send_result_times), np.max(send_result_times), " stdev = ", np.std(send_result_times))
-    print("send-result hist = ", np.histogram(send_result_times))
-
-    print("get_frame mean/min/max = ", np.mean(get_frame_times), np.min(get_frame_times), np.max(get_frame_times), " stdev = ", np.std(get_frame_times))
-    print("get_frame hist = ", np.histogram(get_frame_times))
-
     runtime_all_np = np.asarray(runtime_all)
     n_small_runtime = (runtime_all_np < 1.0/30).sum()
 

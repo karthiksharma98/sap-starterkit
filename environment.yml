@@ -1,0 +1,16 @@
+name: sap
+channels:
+- anaconda
+- pytorch
+dependencies:
+- python=3.8
+- Cython
+- numpy
+- tqdm
+- scikit-image
+- pytorch=1.6.0
+- cudatoolkit=10.2
+- torchvision=0.7.0
+- pip:
+  - pycocotools@git+https://github.com/open-mmlab/cocoapi.git#subdirectory=pycocotools
+  - html4vision
