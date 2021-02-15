@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setuptools.setup(
     name = "sap-toolkit",
     version = "0.0.2",
-    url = "https://github.com/karthiksharma/sap-toolkit",
+    url = "https://github.com/karthiksharma98/sap-starterkit/tree/master/sap-toolkit",
     author = "Kartikeya Sharma",
     author_email = "ksharma@illinois.edu",
     classifiers =

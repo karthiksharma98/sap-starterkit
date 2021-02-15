@@ -18,7 +18,7 @@ conda activate sap
 
 ## Installing sap_toolkit
 
-We provide a toolkit that performs the tasks of streaming frames and receiving output, and generating the .json file required by the [evaluation server]().
+We provide a toolkit that performs the tasks of streaming frames and receiving output, and generating the .json file required by the [evaluation server](https://eval.ai/web/challenges/challenge-page/800/overview).
 
 You can install the toolkit by running:
 
@@ -26,7 +26,7 @@ You can install the toolkit by running:
 pip install sap_toolkit
 ```
 
-The next steps are only required if you wish to run the illustrative baseline examples. For more details about the toolkit, you can check out [this](https://github.com/karthiksharma98/sap-toolkit) page. You can also check out the illustrative baseline examples in this repo to see how the toolkit API is used. 
+The next steps are only required if you wish to run the illustrative baseline examples. For more details about the toolkit, you can check out [this](https://github.com/karthiksharma98/sap-starterkit/tree/master/sap-toolkit) page. You can also check out the illustrative baseline examples in this repo to see how the toolkit API is used. 
 
 ## Installing dependencies to run illustrative examples
 
