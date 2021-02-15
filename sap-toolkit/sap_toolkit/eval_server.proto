@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+// rgb image type
+message Frame {
+    int32 fid = 1;
+    int64 start_ptr = 2;
+    int64 end_ptr = 3;
+    int32 sid = 4;
+    bool end_marker = 6;
+    double timestamp = 7;
+}
+
+message String {
+    string value = 1;
+}
+
+message Bbox {
+    double x1 = 1;
+    double y1 = 2;
+    double x2 = 3;
+    double y2 = 4;
+}
+
+message Result {
+    repeated Bbox bboxes = 1;
+    repeated double bbox_scores=2;
+    repeated int32 labels = 3;
+    int64 fid = 4;
+    double timestamp = 5;
+}
+
+message Empty{}
+
+// service
+service ImageService {
+    rpc GetImageStream(String) returns (stream Frame) {}
+    rpc GetShm(Empty) returns (String) {}
+}
+
+service ResultService {
+    rpc PutResultStream(stream Result) returns (Empty) {}
+    rpc FinishSequence(Empty) returns (Empty) {}
+    rpc GenResults(String) returns (Empty) {}
+}
