@@ -91,10 +91,17 @@ The parameters for the various scripts are explained below:
 [1] `start_server.sh`: This script is used to run the evaluation toolkit server and must be run before running anything else. It initializes two services - an ImageService to stream images to your application and a ResultService to receive output. The various parameters are:
 
 - `--data-root`: This provides the root directory of the dataset.
-- `--annot-path`: This provides the annotations file. Annotations for the training and validation sets are provided (see dataset setup instructions [here](https://github.com/mtli/sAP/blob/master/doc/data_setup.md)). Annotations for the test set will not be released. In this case, this parameter provides the file containing meta-info about the dataset in COCO format, i.e., a .json file similar to the validation and training annotations, but without the actual annotations.
+- `--annot-path`: This provides the annotations file. Annotations for the training and validation sets are provided (see dataset setup instructions [here](https://github.com/mtli/sAP/blob/master/doc/data_setup.md)). *Annotations for the test set will not be released. In this case, this parameter provides the file containing meta-info about the dataset in COCO format, i.e., a .json file similar to the validation and training annotations, but without the actual annotations*.
 - `--overwrite`: Whether to overwrite existing output if present.
 - `--out-dir`: Specifies the output directory. 
 - `--eval-config`: Specifies some parameters for the toolkit. Can be found in this repo as `config.json`.
+
+    This script also launches a command-line interface (CLI) for the local toolkit server that supports the following options:
+
+- `log`: View server log
+- `gen_results <filename>`: After the client script has been run, generate the .json file with the given filename.
+- `evaluate <filename>`: If annotations are provided, run a local evaluation and generate evaluation metrics for the provided .json file with the given filename.
+- `help`: show help
 
 [2] `start_client.sh` / `start_client_forecast.sh`: These scripts are used to run the illustrative examples for the detection-only and detection+forecasting settings respectively. The parameters are:
 
