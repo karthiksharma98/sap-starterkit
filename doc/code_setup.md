@@ -36,7 +36,7 @@ The baseline code has been tested to work with mmcv version v1.1.5 and mmdetecti
 
 ### mmcv installation
 
-First, install [mmcv](https://github.com/open-mmlab/mmcv/tree/v1.1.5). 
+First, install [mmcv](https://github.com/open-mmlab/mmcv/tree/v1.1.5). See [here](https://github.com/open-mmlab/mmcv#install-with-pip) for different versions of MMCV compatible to different PyTorch and CUDA versions. We have tested our baseline code with mmcv v1.1.5, CUDA 10.2 and PyTorch 1.6.
 
 The rule for installing a specified ``mmcv-full`` is as follows:
 
