@@ -127,24 +127,26 @@ def main():
     # initialize evaluation client 
     eval_client = EvalClient(config, verbose=True)
 
+    # launch detector process
     frame_recv, frame_send = mp.Pipe(False)
     det_res_recv, det_res_send = mp.Pipe(False)
     det_proc = mp.Process(target=det_process, args=(opts, frame_recv, det_res_send, w_img, h_img, config, eval_client.get_state()))
     det_proc.start()
 
-    # Initialize runtime mean for dynamic scheduling
+    # dynamic scheduling
     if opts.dynamic_schedule:
-        #runtime mean in seconds on V100 GPU on AWS p3.2x instance for mask_rcnn_r50_fpn_2x_coco model with scale 1.0
+        # initialize runtime mean to 0.0
         runtime_mean = 0.0
         mean_rtf = runtime_mean*opts.fps
 
     n_total = 0
+
+    # initialize arrays to store detection, sending, receiving, association and forecasting times
     t_det_all = []
     t_send_frame_all = []
     t_recv_res_all = []
     t_assoc_all = []
     t_forecast_all = []
-    t_copy_all = []
 
     with torch.no_grad():
         kf_F = torch.eye(8)
@@ -187,7 +189,7 @@ def main():
 
             # get the time when stream's first frame was received
             t_start = eval_client.get_stream_start_time()
-            
+
             count_detections = 1
             while fidx is not None:
                 t1 = perf_counter()
@@ -244,11 +246,9 @@ def main():
 
                     processing = False
                     t_det_end = perf_counter()
-                    # t_det_all.append(t_det_end - t_start_frame)
                     t_det_all.append(t_det)
                     t_send_frame_all.append(t_send_frame)
                     t_recv_res_all.append(t_det_end - t_start_res)
-                    # t_copy_all.append(t_copy)
 
                     # associate across frames
                     t_assoc_start = perf_counter()

@@ -124,7 +124,7 @@ def main():
 
     # dynamic scheduling
     if opts.dynamic_schedule:
-        #runtime mean in seconds on V100 GPU on AWS p3.2x instance for mask_rcnn_r50_fpn_2x_coco model with scale 1.0
+        # initialize runtime mean to 0.0
         runtime_mean = 0.0
         mean_rtf = runtime_mean*opts.fps
 
