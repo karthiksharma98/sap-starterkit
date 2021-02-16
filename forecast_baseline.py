@@ -25,7 +25,7 @@ from utils import dist_from_dict, print_stats
 from utils.mmdet import init_detector, inference_detector, parse_det_result
 
 # utility functions to forecast
-from utils_forecast import ltrb2ltwh_, ltwh2ltrb_, iou_assoc, extrap_clean_up, \
+from utils.forecast import ltrb2ltwh_, ltwh2ltrb_, iou_assoc, extrap_clean_up, \
     bbox2z, bbox2x, x2bbox, make_F, make_Q, \
     batch_kf_predict_only, batch_kf_predict, \
     batch_kf_update
@@ -63,6 +63,7 @@ def parse_args():
 def det_process(opts, frame_recv, det_res_send, w_img, h_img, config, client_state):
 
     try:
+        # load model
         model = init_detector(opts)
 
         # warm up the GPU
@@ -98,6 +99,7 @@ def main():
     assert torch.cuda.device_count() == 1 # mmdet only supports single GPU testing
     opts = parse_args()
 
+    # initialize model config and mapping
     db = COCO(opts.annot_path)
     class_names = [c['name'] for c in db.dataset['categories']]
     n_class = len(class_names)
@@ -106,8 +108,6 @@ def main():
         coco_mapping = np.asarray(coco_mapping)
     seqs = db.dataset['sequences']
     seq_dirs = db.dataset['seq_dirs']
-
-    # initialize model and mapping
     config = json.load(open(opts.eval_config, 'r'))
 
     img = db.imgs[0]
@@ -125,8 +125,8 @@ def main():
     # dynamic scheduling
     if opts.dynamic_schedule:
         #runtime mean in seconds on V100 GPU on AWS p3.2x instance for mask_rcnn_r50_fpn_2x_coco model with scale 1.0
-        runtime_mean = 0.07977026035235901
-        mean_rtf = runtime_mean.mean()*opts.fps
+        runtime_mean = 0.0
+        mean_rtf = runtime_mean*opts.fps
 
     with torch.no_grad():
 
