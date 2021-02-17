@@ -32,7 +32,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-root', type=str, required=True)
     parser.add_argument('--annot-path', type=str, required=True)
-    parser.add_argument('--eval-config', type=str, required=True)
+    parser.add_argument('--eval-config', type=str, required=False)
     parser.add_argument('--out-dir', type=str, required=True)
     parser.add_argument('--overwrite', action='store_true', default=False)
     parser.add_argument('--log', type=str, default="server_log.txt")
