@@ -34,6 +34,7 @@ def parse_args():
     parser.add_argument('--annot-path', type=str, required=True)
     parser.add_argument('--eval-config', type=str, required=False)
     parser.add_argument('--out-dir', type=str, required=True)
+    parser.add_argument('--perf-factor', type=float, default=1)
     parser.add_argument('--overwrite', action='store_true', default=False)
     parser.add_argument('--log', type=str, default="server_log.txt")
 
@@ -170,7 +171,7 @@ class ResultServiceServicer(eval_server_pb2_grpc.ResultServiceServicer):
 
     def PutResultStream(self, result_iterator, context):
         for result in result_iterator:
-            self.timestamps.append(perf_counter() - self.sequence_start_times_dict[self.current_sid.value])
+            self.timestamps.append((perf_counter() - self.sequence_start_times_dict[self.current_sid.value])/self.opts.perf_factor)
             self.time_rcv.append(perf_counter() - result.timestamp)
             bboxes = np.ndarray((len(result.bboxes), 4), dtype=np.float32)
             bbox_scores = np.ndarray((len(result.bbox_scores),), dtype=np.float32)
