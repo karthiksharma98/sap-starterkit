@@ -25,9 +25,9 @@ Once you have written your algorithm and generated your output using the toolkit
    
 ## Advanced topics for development
 
-**Simulation**: simulation allows for efficient stagewise development (detection first and then tracking and forecasting) and also accuracy-priortized development (since the runtime can be simulated). This concept is explained in the [streaming perception paper](http://www.cs.cmu.edu/~mengtial/proj/streaming/) and its accompanying [repo sAP](https://github.com/mtli/sAP).
+**Simulation**: simulation allows for efficient stagewise development (detection first and then tracking and forecasting) and also accuracy-priortized development (since the runtime can be simulated). This concept is explained in the [streaming perception paper](http://www.cs.cmu.edu/~mengtial/proj/streaming/) and its accompanying repo [sAP](https://github.com/mtli/sAP).
 
-**Visualization**: visualization helps to identify issues and provides intuitions for innovation. This is also included in the [sAP repo](https://github.com/mtli/sAP).
+**Visualization**: visualization helps to identify issues and provides intuitions for innovation. This is also included in the [sAP](https://github.com/mtli/sAP) repo.
 
 
 
