@@ -18,7 +18,7 @@ conda activate sap
 
 ## Installing sap_toolkit
 
-We provide a toolkit that performs the tasks of streaming frames and receiving output, and generating the .json file required by the [evaluation server](https://eval.ai/web/challenges/challenge-page/800/overview).
+We provide a toolkit that performs the tasks of streaming frames and receiving output, and generating the .json file required by the [challenge website](https://eval.ai/web/challenges/challenge-page/800/overview).
 
 You can install the toolkit by running:
 
@@ -26,13 +26,13 @@ You can install the toolkit by running:
 pip install sap_toolkit
 ```
 
-The next steps are only required if you wish to run the illustrative baseline examples. For more details about the toolkit, you can check out [this](https://github.com/karthiksharma98/sap-starterkit/tree/master/sap-toolkit) page. You can also check out the illustrative baseline examples in this repo to see how the toolkit API is used. 
+The next steps are only required if you wish to run the  baseline examples. For more details about the benchmark toolkit including its design and API, you can check out [this](https://github.com/karthiksharma98/sap-starterkit/tree/master/sap-toolkit) page. You can also check out the baseline examples in this repo to see how the toolkit API is used. 
 
-## Installing dependencies to run illustrative examples
+## Installing dependencies to run baseline examples
 
-To run the illustrative examples, first mmcv-full and mmdetection must be installed.
+To run the baseline examples, first mmcv-full and mmdetection must be installed.
 
-The baseline code has been tested to work with mmcv version v1.1.5 and mmdetection v2.7.0. Steps to install there are given below:
+The baseline example code has been tested to work with mmcv version v1.1.5 and mmdetection v2.7.0. Steps to install these are given below:
 
 ### mmcv installation
 
@@ -45,10 +45,10 @@ pip install mmcv-full=={mmcv_version} -f https://download.openmmlab.com/mmcv/dis
 ```
 
 Please replace `{cu_version}` and ``{torch_version}`` in the url to your desired one. For example,
-to install the latest ``mmcv-full`` with ``CUDA 10.2`` and ``PyTorch 1.6.0``, use the following command:
+to install the ``mmcv-full v1.1.5``  with ``CUDA 10.2`` and ``PyTorch 1.6.0``, use the following command:
 
 ```shell
-pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.6.0/index.html
+pip install mmcv-full==1.1.5 -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.6.0/index.html
 ```
 
 More detailed instructions on mmcv installation can be found [here](https://github.com/open-mmlab/mmcv/blob/master/README.md).
@@ -67,8 +67,9 @@ Install mmdetection within the `sap` environment:
 pip install -r requirements/build.txt
 pip install -v -e .  # or "python setup.py develop"
 ```
-This step will compile some CUDA and C++ files and might take some time.
+This step will compile some CUDA and C++ files and might take some time. 
 
+More detailed instructions on mmdetection installation can be found [here](https://github.com/open-mmlab/mmdetection/blob/master/docs/get_started.md).
 
 ## Prepare detection models
 
@@ -88,7 +89,7 @@ Note that Argoverse-HD is annotated according to COCO's format and class definit
 
 The parameters for the various scripts are explained below:
 
-1. `start_server.sh`: This script is used to run the evaluation toolkit server and must be run before running anything else. It initializes two services - an ImageService to stream images to your application and a ResultService to receive output. The various parameters are:
+1. `start_server.sh`: This script is used to run the benchmark toolkit server process and must be run before running anything else. It initializes two services - an ImageService to stream images to your application and a ResultService to receive output. The various parameters are:
 
 - `--data-root`: This provides the root directory of the dataset.
 - `--annot-path`: This provides the annotations file. Annotations for the training and validation sets are provided (see dataset setup instructions [here](https://github.com/mtli/sAP/blob/master/doc/data_setup.md)). *Annotations for the test set will not be released. In this case, this parameter provides the file containing meta-info about the dataset in COCO format, i.e., a .json file similar to the validation and training annotations, but without the actual annotations*.
@@ -106,7 +107,7 @@ The parameters for the various scripts are explained below:
 
 - `--config`: Provides the configuration file for the mmdetection model. Can be found in the mmdetection repo.
 - `--weights`: Provides the weights for the mmdetection model. Can be downloaded from the [model zoo](https://github.com/open-mmlab/mmdetection/blob/v2.7.0/docs/model_zoo.md).
-- `--in-scale`: Input scale for the mmdetection model. We use 1.0 for our baselines.
+- `--in-scale`: Input scale for the mmdetection model. We use 1.0 for our baselines. This is the scale relative to the size of images in the Argoverse-HD dataset. So a scale of 1.0 refers to images with resolution 1920x1200 whereas a scale of 0.5 would be images resized to 960x600.
 - `--annot-path`: Same as in start_server.sh described above.
 - `--eval-config`: Same as in start_server.sh described above.
 
@@ -120,4 +121,4 @@ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.149
 
 ## Other details
 
-The file `forecasting_baseline.py` contains code which has our implementation of a Kalman filter for forecasting, and an implementation of dynamic scheduling from the Streaming perception paper. This uses has a couple of other parameters (`--match-iou-th` and `--forecast-rt-ub`) which have been tuned for our detector baseline with <= 100 detections. These may need to modified if you are using a different model to achieve the best results.
+The file `forecasting_baseline.py` contains code which has our implementation of a Kalman filter for forecasting, and an implementation of dynamic scheduling from the Streaming perception paper. This uses a couple of other parameters (`--match-iou-th` and `--forecast-rt-ub`) which have been tuned for our detector baseline with <= 100 detections. These may need to modified if you are using a different model to achieve the best results.
