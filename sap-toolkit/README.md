@@ -71,9 +71,9 @@ For example applications using the sap_toolkit, check out the baseline examples 
 
 The streaming perception task requires a perception system to receive frames at a constant frame rate. Outputs from the system must also be timestamped for evaluation. This toolkit takes care of these tasks. 
 
-A block diagram explaining how the toolkit works is shown below:
+A diagram explaining how the toolkit works is shown below:
 
-![sap_toolkit_block](sap_toolkit_block.png)
+![sap_toolkit_block](../block.png)
 
 1. When the server module is run, it launches two additional processes, one for streaming frames and one for receiving results from the client.
 2. When an `EvalClient` object is created on the client side, it communicates with the server. When it requests a stream for a specific sequence (sequence here refers to a single video in the dataset), all the images in the sequence are first loaded to shared memory. Shared memory is used for inter-process communication as it is the fastest method with negligible IPC latency.

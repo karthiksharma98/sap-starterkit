@@ -3,7 +3,9 @@
 This repo is the starter kit for the [Streaming Perception Challenge](https://eval.ai/web/challenges/challenge-page/800/overview) to be held as part of the Workshop on Autonomous Driving at CVPR 2021. It contains a benchmark toolkit for measuring algorithm's performance and several baseline methods to get you started.
 
 
-As shown in the figure below (ADD THE DIAGRAM), a streaming perception benchmark sends frames to the algorithm in real-time and queries for the state of the world at predefined time steps (determined by the framerate of the video). Therefore, unlike other benchmark toolkits (e.g., COCO toolkit) which run in a post-processing fashion, our toolkit is a daemon process that needs to be running before the algorithm starts processing. In the following text, we will refer to the benchmark daemon as the "server" and the algorithm as the "client". For more details about the server/client design, check out the toolkit [README](https://github.com/karthiksharma98/sap-starterkit/blob/master/sap-toolkit/README.md).
+As shown in the figure below , a streaming perception benchmark sends frames to the algorithm in real-time and queries for the state of the world at predefined time steps (determined by the framerate of the video). Therefore, unlike other benchmark toolkits (e.g., COCO toolkit) which run in a post-processing fashion, our toolkit is a daemon process that needs to be running before the algorithm starts processing. In the following text, we will refer to the benchmark daemon as the "server" and the algorithm as the "client". For more details about the server/client design, check out the toolkit [README](https://github.com/karthiksharma98/sap-starterkit/blob/master/sap-toolkit/README.md).
+
+![block](block.png)
 
 ## Getting started
   1. Follow the instructions [here](https://github.com/mtli/sAP/blob/master/doc/data_setup.md) to download and set up the dataset.
@@ -18,11 +20,22 @@ The baselines we provide show you how to use the API provided by our `sap_toolki
 
 Further documentation on the `sap_toolkit` can be found [here](https://github.com/karthiksharma98/sap-starterkit/tree/master/sap-toolkit)
 
-
 ## Upload your results to the challenge website
 
 Once you have written your algorithm and generated your output using the toolkit, you can upload it to the [challenge website](https://eval.ai/web/challenges/challenge-page/800/overview).
    
+## Baseline Methods Explained
+
+### Detection-only track:
+
+This method uses the Mask-RCNN (with ResNet-FPN-50 backbone) single-frame object detector with a relative input scale of 1.0 (it accepts Argoverse-HD images at their original 1920x1200 resolution). 
+
+### Full-stack track:
+
+This uses the same detector as above, however it incorporates a few techniques from the paper - dynamic scheduling, association and forecasting using a Kalman filter. This is explained in the figure below (taken from Fig. 7 from the paper).
+
+![fig7](fig7.png)
+
 
 
 

@@ -89,7 +89,7 @@ Note that Argoverse-HD is annotated according to COCO's format and class definit
 
 The parameters for the various scripts are explained below:
 
-1. `start_server.sh`: This script is used to run the benchmark toolkit server process and must be run before running anything else. It initializes two services - an ImageService to stream images to your application and a ResultService to receive output. The various parameters are:
+1. `start_server.sh`: This script is used to run the benchmark toolkit server process and must be run before running anything else. It initializes two processes - an ImageService process to stream images to your application and a ResultService process to receive output. The various parameters are:
 
 - `--data-root`: This provides the root directory of the dataset.
 - `--annot-path`: This provides the annotations file. Annotations for the training and validation sets are provided (see dataset setup instructions [here](https://github.com/mtli/sAP/blob/master/doc/data_setup.md)). *Annotations for the test set will not be released. In this case, this parameter provides the file containing meta-info about the dataset in COCO format, i.e., a .json file similar to the validation and training annotations, but without the actual annotations*.
