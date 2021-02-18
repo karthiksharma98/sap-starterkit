@@ -96,6 +96,7 @@ The parameters for the various scripts are explained below:
 - `--overwrite`: Whether to overwrite existing output if present.
 - `--out-dir`: Specifies the output directory. 
 - `--eval-config`: (Optional) Specifies some networking parameters for the toolkit. Can be found in this repo as `config.json`.
+- `--perf-factor`: (Set by default to 1.0 if not provided). Provides a runtime scaling factor to compensate for difference in hardware. Refer to [this](https://docs.google.com/spreadsheets/d/1g5jUAbeNswO-EQHrU9EHYpTT2XYCbepeL9KFEAVehMo/edit#gid=0) spreadsheet for a list of performance conversion factors based on your GPU.
 
     This script also launches a command-line interface (CLI) for the local toolkit server that supports the following options:
 

@@ -41,6 +41,7 @@ The various parameters are:
 - `--annot-path`: This provides the annotations file in COCO format. It is required for local evaluation. If annotations are not available, this must be provided to be a .json file containing meta-information about the dataset in COCO format (essentially the COCO annotations .json file without the "annotations" key)
 - `--overwrite`: Whether to overwrite existing output if present.
 - `--out-dir`: Specifies the output directory. 
+- `--perf-factor`: (Set by default to 1.0 if not provided). Provides a runtime scaling factor to compensate for difference in hardware. Refer to [this](https://docs.google.com/spreadsheets/d/1g5jUAbeNswO-EQHrU9EHYpTT2XYCbepeL9KFEAVehMo/edit#gid=0) spreadsheet for a list of performance conversion factors based on your GPU.
 
     This also launches a command-line interface (CLI) that supports the following options:
 
