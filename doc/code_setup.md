@@ -88,7 +88,7 @@ Note that Argoverse-HD is annotated according to COCO's format and class definit
 
 The parameters for the various scripts are explained below:
 
-[1] `start_server.sh`: This script is used to run the evaluation toolkit server and must be run before running anything else. It initializes two services - an ImageService to stream images to your application and a ResultService to receive output. The various parameters are:
+1. `start_server.sh`: This script is used to run the evaluation toolkit server and must be run before running anything else. It initializes two services - an ImageService to stream images to your application and a ResultService to receive output. The various parameters are:
 
 - `--data-root`: This provides the root directory of the dataset.
 - `--annot-path`: This provides the annotations file. Annotations for the training and validation sets are provided (see dataset setup instructions [here](https://github.com/mtli/sAP/blob/master/doc/data_setup.md)). *Annotations for the test set will not be released. In this case, this parameter provides the file containing meta-info about the dataset in COCO format, i.e., a .json file similar to the validation and training annotations, but without the actual annotations*.
@@ -102,7 +102,7 @@ The parameters for the various scripts are explained below:
 - `evaluate <filename>`: If annotations are provided, run a local evaluation and generate evaluation metrics for the provided .json file with the given filename.
 - `help`: show help
 
-[2] `start_client.sh` / `start_client_forecast.sh`: These scripts are used to run the illustrative examples for the detection-only and detection+forecasting settings respectively. The parameters are:
+2. `start_client.sh` / `start_client_forecast.sh`: These scripts are used to run the illustrative examples for the detection-only and detection+forecasting settings respectively. The parameters are:
 
 - `--config`: Provides the configuration file for the mmdetection model. Can be found in the mmdetection repo.
 - `--weights`: Provides the weights for the mmdetection model. Can be downloaded from the [model zoo](https://github.com/open-mmlab/mmdetection/blob/v2.7.0/docs/model_zoo.md).
@@ -113,7 +113,7 @@ The parameters for the various scripts are explained below:
 
 ## Setup verification
 
-If you have set up correctly, running `start_server.sh` followed by  `start_client.sh` and then typing `evaluate results.json` on the evaluation server CLI once the second script has finished running should be able to get you an AP of ~15.0 on the validation set: (This number may vary based on hardware. We obtain this baseline on a Tesla V100 GPU on an AWS p3.2x instance, for a Mask-RCNN-FPN-50 model with scale 1.0).
+If you have set up correctly, running `start_server.sh` followed by  `start_client.sh` and then typing `evaluate results.json` on the evaluation server CLI once the second script has finished running should be able to get you an AP of ~15.0 on the validation set: (This number may vary based on hardware. We obtain this baseline on a Tesla V100 GPU on an AWS p3.2x instance, for Mask RCNN FPN R50 with input scale 1.0).
 ```
 Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.149
 ```
