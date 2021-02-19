@@ -1,8 +1,6 @@
-# multi-processing version of rt det + pps_forecast, only passing frame index and results between processes
-# The Kalman Filter version
-
 import argparse, json, pickle
 
+import os, sys
 from os.path import join, isfile, basename
 from glob import glob
 from time import perf_counter
@@ -13,7 +11,6 @@ from tqdm import tqdm
 # setting environment variables - we have noticed that
 # numpy creates extra threads which slows down computation,
 # these environment variables prevent that
-import os
 os.environ["MKL_NUM_THREADS"]="1"
 os.environ["NUMEXPR_NUM_THREADS"]="1"
 os.environ["OMP_NUM_THREADS"]="1"
@@ -139,8 +136,6 @@ def main():
         runtime_mean = 0.0
         mean_rtf = runtime_mean*opts.fps
 
-    n_total = 0
-
     # initialize arrays to store detection, sending, receiving, association and forecasting times
     t_det_all = []
     t_send_frame_all = []
@@ -160,10 +155,6 @@ def main():
             # Request stream for current sequence from evaluation server
             eval_client.request_stream(seq)
 
-            frame_list = [img for img in db.imgs.values() if img['sid'] == sid]
-            n_frame = len(frame_list)
-            n_total += n_frame
-            
             fidx = 0
             processing = False  
             fidx_t2 = None            # detection input index at t2

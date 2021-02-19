@@ -47,6 +47,7 @@ def run():
     coco_mapping = db.dataset.get('coco_mapping', None)
     if coco_mapping is not None:
         coco_mapping = np.asarray(coco_mapping)
+    seqs = db.dataset['sequences']
     
     # initialize model
     print("Loading model")
@@ -56,7 +57,7 @@ def run():
     eval_client = EvalClient(config, verbose=True)
 
     # iterate over all sequences (videos)
-    for sid, seq in enumerate(db.dataset['sequences']):
+    for seq in seqs:
 
         # Request stream for current sequence from evaluation server
         eval_client.request_stream(seq)
