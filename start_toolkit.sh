@@ -10,5 +10,5 @@ python -m sap_toolkit.server \
 	--data-root "$dataDir/Argoverse-1.1/tracking" \
 	--annot-path "$dataDir/Argoverse-HD/annotations/val.json" \
 	--overwrite \
-	--out-dir "$dataDir/Exp/Argoverse-HD/output/${methodName}_s${scale}_evalserver_forecast/val" \
+	--out-dir "$dataDir/Exp/Argoverse-HD/output/${methodName}_s${scale}/val" \
 	--eval-config "./config.json"
