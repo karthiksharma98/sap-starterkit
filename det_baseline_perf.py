@@ -43,6 +43,7 @@ def detector_process():
     coco_mapping = db.dataset.get('coco_mapping', None)
     if coco_mapping is not None:
         coco_mapping = np.asarray(coco_mapping)
+    seqs = db.dataset['sequences']
     
     print("Loading model")
     model = get_model(opts)
@@ -51,11 +52,10 @@ def detector_process():
 
     send_result_times = []
     get_frame_times = []
-    get_frame_copy_times = []
 
     runtime_all = []
 
-    for sid, seq in enumerate(db.dataset['sequences']):
+    for seq in seqs:
         # Request stream from server
         
         eval_client.request_stream(seq)
@@ -93,8 +93,6 @@ def detector_process():
         ))
 
     runtime_all_np = np.asarray(runtime_all)
-    n_small_runtime = (runtime_all_np < 1.0/30).sum()
-
     # convert to ms for display
     runtime_all_np *= 1e3
     print('Runtime (ms): mean: %g; std: %g; min: %g; max: %g' % (

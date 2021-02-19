@@ -1,5 +1,6 @@
 import argparse, json, pickle
 
+import os, sys
 from os.path import join, isfile, basename
 from glob import glob
 from time import perf_counter
@@ -10,7 +11,6 @@ from tqdm import tqdm
 # setting environment variables - we have noticed that
 # numpy creates extra threads which slows down computation,
 # these environment variables prevent that
-import os
 os.environ["MKL_NUM_THREADS"]="1"
 os.environ["NUMEXPR_NUM_THREADS"]="1"
 os.environ["OMP_NUM_THREADS"]="1"
@@ -107,7 +107,6 @@ def main():
     if coco_mapping is not None:
         coco_mapping = np.asarray(coco_mapping)
     seqs = db.dataset['sequences']
-    seq_dirs = db.dataset['seq_dirs']
     config = json.load(open(opts.eval_config, 'r'))
 
     img = db.imgs[0]
@@ -137,14 +136,10 @@ def main():
         kf_R = 10*torch.eye(4)
         kf_P_init = 100*torch.eye(8).unsqueeze(0)
 
-        for sid, seq in enumerate(tqdm(seqs)):
-
+        for seq in tqdm(seqs):
             # Request stream for current sequence from evaluation server
             eval_client.request_stream(seq)
 
-            frame_list = [img for img in db.imgs.values() if img['sid'] == sid]
-            n_frame = len(frame_list)
-            
             fidx = 0
             processing = False  
             fidx_t2 = None            # detection input index at t2
@@ -203,7 +198,6 @@ def main():
 
                 # send frame to detector process
                 if not processing:
-                    t_start_frame = perf_counter()
                     frame_send.send(fidx)
                     fidx_latest = fidx
                     processing = True
@@ -295,13 +289,10 @@ def main():
                     bboxes_t3, keep = extrap_clean_up(bboxes_t3, w_img, h_img, lt=True)
                     labels_t3 = labels[keep]
                     scores_t3 = scores[keep]
-                    tracks_t3 = tracks[keep]
-
                 else:
                     bboxes_t3 = np.empty((0, 4), dtype=np.float32)
                     scores_t3 = np.empty((0,), dtype=np.float32)
                     labels_t3 = np.empty((0,), dtype=np.int32)
-                    tracks_t3 = np.empty((0,), dtype=np.int32)
                 
                 if len(bboxes_t3):
                     ltwh2ltrb_(bboxes_t3)
