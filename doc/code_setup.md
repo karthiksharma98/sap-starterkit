@@ -26,7 +26,7 @@ You can install the toolkit by running:
 pip install sap_toolkit
 ```
 
-The next steps are only required if you wish to run the  baseline examples. For more details about the benchmark toolkit including its design and API, you can check out [this](https://github.com/karthiksharma98/sap-starterkit/tree/master/sap-toolkit) page. You can also check out the baseline examples in this repo to see how the toolkit API is used. 
+**Note:** The next steps are only required if you wish to run the  baseline examples. For more details about the benchmark toolkit including its design and API, you can check out [this](https://github.com/karthiksharma98/sap-starterkit/tree/master/sap-toolkit) page. You can also check out the baseline examples in this repo to see how the toolkit API is used. 
 
 ## Installing dependencies to run baseline examples
 
@@ -89,7 +89,7 @@ Note that Argoverse-HD is annotated according to COCO's format and class definit
 
 The parameters for the various scripts are explained below:
 
-1. `start_server.sh`: This script is used to run the benchmark toolkit server process and must be run before running anything else. It initializes two processes - an ImageService process to stream images to your application and a ResultService process to receive output. The various parameters are:
+1. `start_toolkit.sh`: This script is used to run the benchmark toolkit daemon process and must be run before running anything else. It initializes two processes - an ImageService process to stream images to your application and a ResultService process to receive output from your application. The various parameters are:
 
 - `--data-root`: This provides the root directory of the dataset.
 - `--annot-path`: This provides the annotations file. Annotations for the training and validation sets are provided (see dataset setup instructions [here](https://github.com/mtli/sAP/blob/master/doc/data_setup.md)). *Annotations for the test set will not be released. In this case, this parameter provides the file containing meta-info about the dataset in COCO format, i.e., a .json file similar to the validation and training annotations, but without the actual annotations*.
@@ -98,13 +98,13 @@ The parameters for the various scripts are explained below:
 - `--eval-config`: (Optional) Specifies some networking parameters for the toolkit. Can be found in this repo as `config.json`.
 - `--perf-factor`: (Set by default to 1.0 if not provided). Provides a runtime scaling factor to compensate for difference in hardware. Refer to [this](https://docs.google.com/spreadsheets/d/1g5jUAbeNswO-EQHrU9EHYpTT2XYCbepeL9KFEAVehMo/edit#gid=0) spreadsheet for a list of performance conversion factors based on your GPU.
 
-    This script also launches a command-line interface (CLI) for the local toolkit server that supports the following options:
+    This script also launches a command-line interface (CLI) that supports the following options:
 
 - `log`: View server log
 - `evaluate <filename>`: If annotations are provided, run a local evaluation and generate evaluation metrics for the provided .json file with the given filename.
 - `help`: show help
 
-2. `start_client.sh` / `start_client_forecast.sh`: These scripts are used to run the illustrative examples for the detection-only and detection+forecasting settings respectively. The parameters are:
+1. `start_det_baseline.sh` / `start_fs_baseline.sh`: These scripts are used to run the illustrative examples for the detection-only and detection+forecasting settings respectively. The parameters are:
 
 - `--config`: Provides the configuration file for the mmdetection model. Can be found in the mmdetection repo.
 - `--weights`: Provides the weights for the mmdetection model. Can be downloaded from the [model zoo](https://github.com/open-mmlab/mmdetection/blob/v2.7.0/docs/model_zoo.md).
@@ -115,7 +115,7 @@ The parameters for the various scripts are explained below:
 
 ## Setup verification
 
-If you have set up correctly, running `start_server.sh` followed by  `start_client.sh` and then typing `evaluate results.json` on the evaluation server CLI once the second script has finished running should be able to get you an AP of ~15.0 on the validation set: (This number may vary based on hardware. We obtain this baseline on a Tesla V100 GPU on an AWS p3.2x instance, for Mask RCNN FPN R50 with input scale 1.0).
+If you have set up correctly, running `start_toolkit.sh` followed by  `start_det_baseline.sh` and then typing `evaluate results.json` on the evaluation server CLI once the second script has finished running should be able to get you an AP of ~15.0 on the validation set: (This number may vary based on hardware. We obtain this baseline on a Tesla V100 GPU on an AWS p3.2x instance, for Mask RCNN FPN R50 with input scale 1.0).
 ```
 Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.149
 ```

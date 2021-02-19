@@ -203,8 +203,8 @@ def result_server(opts, db, current_sid, sequence_start_times, res_rcv, log):
         result_server.stop(None)
 
 class EvalShell(cmd.Cmd):
-    intro = 'Welcome to the eval server.   Type help or ? to list commands.\n'
-    prompt = '(eval_server) '
+    intro = 'Welcome to the sap_toolkit.   Type help or ? to list commands.\n'
+    prompt = '(server) '
 
     def __init__(self, img_server, img_servicer, opts, db, res_send):
         super(EvalShell, self).__init__()
@@ -215,14 +215,14 @@ class EvalShell(cmd.Cmd):
         self.res_send = res_send
 
     def do_close(self, arg):
-        'Terminate evaluation server'
+        'Terminate server'
         self.img_servicer.close()
         self.img_server.stop(None)
         self.res_send.send('terminate')
         return True
 
     def do_gen_results(self, arg):
-        'Generate and save results in coco-format to output directory. Usage: gen_results result_file.json'
+        'Generate and save results in coco-format to output directory if intermediate output present in output directory. Usage: gen_results result_file.json'
         if not arg.endswith('.json') and not arg.endswith('.pkl'):
             print("Can only output to .json or .pkl file")
             return
@@ -234,7 +234,7 @@ class EvalShell(cmd.Cmd):
         evaluate(self.db, self.opts.out_dir, arg, self.opts.overwrite)
 
     def do_log(self, arg):
-        'View server log'
+        'View log'
         os.system("cat " + self.opts.log)
 
 if __name__ == '__main__':
