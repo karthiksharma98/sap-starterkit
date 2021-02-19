@@ -29,7 +29,7 @@ The created virtual environment is named `sap` and you can activate it by
 conda activate sap
 ```
 
-The next step is to manually install `mmcv` and `mmdetection` *within the `sap` environment*. The baseline code has been tested with `mmcv` v1.1.5 and `mmdetection` v2.7.0 and compatibility with other versions is not tested.
+The next step is to manually install `mmcv` and `mmdetection` *within the `sap` environment*. (Make sure `sap_toolkit` has also been installed within the environment). The baseline code has been tested with `mmcv` v1.1.5 and `mmdetection` v2.7.0 and compatibility with other versions is not tested.
 
 ### mmcv installation
 
