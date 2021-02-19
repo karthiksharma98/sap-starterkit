@@ -39,7 +39,7 @@ This uses the same detector as above, however it incorporates a few techniques f
 
 **Simulation**: simulation allows for efficient stagewise development (detection first and then tracking and forecasting) and also accuracy-priortized development (since the runtime can be simulated). This concept is explained in the [streaming perception paper](http://www.cs.cmu.edu/~mengtial/proj/streaming/) and its accompanying repo [sAP](https://github.com/mtli/sAP).
 
-**Visualization**: visualization helps to identify issues and provides intuitions for innovation. This is also included in the [sAP](https://github.com/mtli/sAP) repo.
+**Visualization**: visualization helps to identify issues and provides intuitions for innovation. Visual analysis of the baseline methods can be found on [here](http://www.cs.cmu.edu/~mengtial/proj/streaming/streaming-visuals.html) and how to produce such visualization can be found in the [sAP](https://github.com/mtli/sAP) repo.
 
 
 
