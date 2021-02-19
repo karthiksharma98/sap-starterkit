@@ -79,7 +79,7 @@ def detector_process():
             runtime.append(perf_counter() - t_run1)
         
         eval_client.stop_stream()
-        print("Sent all results for seq ", seq)
+        print("Finished seq ", seq)
 
         runtime_all += runtime
 
@@ -94,13 +94,8 @@ def detector_process():
 
     runtime_all_np = np.asarray(runtime_all)
     # convert to ms for display
-    runtime_all_np *= 1e3
-    print('Runtime (ms): mean: %g; std: %g; min: %g; max: %g' % (
-        runtime_all_np.mean(),
-        runtime_all_np.std(ddof=1),
-        runtime_all_np.min(),
-        runtime_all_np.max(),
-    ))
+    s2ms = lambda x: 1e3*x
+    print_stats(runtime_all_np, 'Runtime (ms)', cvt=s2ms)
 
     eval_client.close()
 

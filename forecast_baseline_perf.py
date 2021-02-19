@@ -175,7 +175,6 @@ def main():
                 elif isinstance(msg, Exception):
                     raise msg
 
-            t_total = n_frame/opts.fps
             t_unit = 1/opts.fps
 
             # get the time when stream's first frame was received
@@ -185,8 +184,6 @@ def main():
             while fidx is not None:
                 t1 = perf_counter()
                 t_elapsed = t1 - t_start
-                if t_elapsed >= t_total:
-                    break
 
                 # identify latest available frame
                 fidx_continous = t_elapsed*opts.fps
@@ -330,8 +327,6 @@ def main():
                 
                 t3 = perf_counter()
                 t_elapsed = t3 - t_start
-                if t_elapsed >= t_total:
-                    break
 
                 if len(bboxes_t3):
                     ltwh2ltrb_(bboxes_t3)
