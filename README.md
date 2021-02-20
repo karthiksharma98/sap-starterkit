@@ -28,7 +28,9 @@ Once you have written your algorithm and generated your output using the toolkit
 
 ### Detection-only track:
 
-This method uses the Mask-RCNN (with ResNet-FPN-50 backbone) single-frame object detector with a relative input scale of 1.0 (it accepts Argoverse-HD images at their original 1920x1200 resolution). 
+This method uses the Mask-RCNN (with ResNet-FPN-50 backbone) single-frame object detector with a relative input scale of 1.0 (it accepts Argoverse-HD images at their original 1920x1200 resolution). It also incorporates the dynamic scheduling method described in the paper.
+
+**Note:** For the detection-only track, we **don't allow any methods that use temporal reasoning**, such as forecasting, tracking or detectors that use a sequence of frames. We only allow single-frame detector methods. (scheduling methods that don't use temporal reasoning are allowed)
 
 ### Full-stack track:
 

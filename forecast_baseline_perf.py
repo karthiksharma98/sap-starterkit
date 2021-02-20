@@ -22,7 +22,7 @@ import os
 from pycocotools.coco import COCO
 
 # utility functions for mmdetection
-from utils import dist_from_dict, print_stats
+from utils import print_stats
 from utils.mmdet import init_detector, inference_detector, parse_det_result
 
 # utility functions to forecast
@@ -34,7 +34,7 @@ from utils.forecast import ltrb2ltwh_, ltwh2ltrb_, iou_assoc, extrap_clean_up, \
 # multiprocessing
 import multiprocessing as mp
 
-# evaluation server utility functions
+# benchmark toolkit API
 from sap_toolkit.client import EvalClient
 
 
@@ -73,7 +73,7 @@ def det_process(opts, frame_recv, det_res_send, w_img, h_img, config, client_sta
         # warm up the GPU
         _ = inference_detector(model, np.zeros((h_img, w_img, 3), np.uint8))
         torch.cuda.synchronize()
-        eval_client = EvalClient(config, state=client_state, verbose=True)
+        eval_client = EvalClient(config, state=client_state, verbose=False)
 
         while 1:
             fidx = frame_recv.recv()
@@ -122,7 +122,7 @@ def main():
     w_img, h_img = img['width'], img['height']
 
     # initialize evaluation client 
-    eval_client = EvalClient(config, verbose=True)
+    eval_client = EvalClient(config, verbose=False)
 
     # launch detector process
     frame_recv, frame_send = mp.Pipe(False)
@@ -133,8 +133,7 @@ def main():
     # dynamic scheduling
     if opts.dynamic_schedule:
         # initialize runtime mean to 0.0
-        runtime_mean = 0.0
-        mean_rtf = runtime_mean*opts.fps
+        mean_rtf = 0
 
     # initialize arrays to store detection, sending, receiving, association and forecasting times
     t_det_all = []
@@ -150,7 +149,7 @@ def main():
         kf_R = 10*torch.eye(4)
         kf_P_init = 100*torch.eye(8).unsqueeze(0)
 
-        for sid, seq in enumerate(tqdm(seqs)):
+        for seq in tqdm(seqs):
 
             # Request stream for current sequence from evaluation server
             eval_client.request_stream(seq)
@@ -198,18 +197,15 @@ def main():
                 else:
                     wait_for_next = False
                     if opts.dynamic_schedule:
-                        if mean_rtf >= 1:
-                            # when runtime < 1, it should always process every frame
+                        if mean_rtf >= 1: # when runtime < 1, it should always process every frame
                             fidx_remainder = fidx_continous - fidx
                             if mean_rtf < np.floor(fidx_remainder + mean_rtf):
                                 # wait till next frame
                                 wait_for_next = True
 
                 if wait_for_next:
-                    # sleep
                     continue
 
-                # print("Processing fidx ", fidx)
                 if not processing:
                     t_start_frame = perf_counter()
                     frame_send.send((fidx, t_start_frame))
@@ -331,6 +327,7 @@ def main():
                 if len(bboxes_t3):
                     ltwh2ltrb_(bboxes_t3)
 
+                # send result to benchmark toolkit
                 if fidx_t2 is not None:
                     eval_client.send_result_to_server(bboxes_t3, scores_t3, labels_t3)
 
