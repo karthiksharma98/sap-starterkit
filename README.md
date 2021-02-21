@@ -21,7 +21,7 @@ Further documentation on the `sap_toolkit` can be found [here](https://github.co
 
 ## Upload your results to the challenge website
 
-Once you have written your algorithm and generated your output using the toolkit, you can upload it to the [challenge website](https://eval.ai/web/challenges/challenge-page/800/overview).
+Once you have written your algorithm and generated your output using the toolkit (results.json), you can upload it to the [challenge website](https://eval.ai/web/challenges/challenge-page/800/overview).
    
 ## Baseline Methods Explained
 
