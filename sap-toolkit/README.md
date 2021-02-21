@@ -72,7 +72,7 @@ The streaming perception task requires a perception system to receive frames at 
 
 A diagram explaining how the toolkit works is shown below:
 
-![sap_toolkit_block](../block.png)
+![benchmark-toolkit](../doc/img/benchmark-toolkit.png)
 
 1. When the benchmark toolkit is run, it launches two additional processes, one for streaming frames and one for receiving results from the client.
 2. When an `EvalClient` object is created in your algorithm, it communicates with the server. When it requests a stream for a specific sequence (sequence here refers to a single video in the dataset), all the images in the sequence are first loaded to shared memory. Shared memory is used for inter-process communication as it is the fastest method with negligible IPC latency.

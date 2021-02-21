@@ -1,11 +1,10 @@
 # sap-starterkit
 
-This repo is the starter kit for the [Streaming Perception Challenge](https://eval.ai/web/challenges/challenge-page/800/overview) to be held as part of the Workshop on Autonomous Driving at CVPR 2021. It contains a benchmark toolkit for measuring algorithm's performance and several baseline methods to get you started.
+This repo is the starter kit for the [Streaming Perception Challenge](https://eval.ai/web/challenges/challenge-page/800/overview) to be held as part of the Workshop on Autonomous Driving at CVPR 2021. It contains a benchmark toolkit for measuring algorithm's performance and several baseline methods to get you started. The benchmark toolkit and the provided APIs used in the baselines aim to provide an abstraction over the streaming perception framework, which allows participants to solely focus on developing the algorithm itself and also ensures a fair competition for the challenge.
 
+![benchmark-toolkit](doc/img/benchmark-toolkit.png)
 
-As shown in the figure below, a streaming perception benchmark sends frames to the algorithm in real-time and queries for the state of the world at predefined time steps (determined by the framerate of the video). Therefore, unlike other benchmark toolkits (e.g., COCO toolkit) which run in a post-processing fashion, our toolkit is a daemon process that needs to be running before the algorithm starts processing. For more details about the the toolkit's design, check out the toolkit [README](https://github.com/karthiksharma98/sap-starterkit/blob/master/sap-toolkit/README.md).
-
-![block](block.png)
+The benchmark toolkit sends frames to the algorithm in real-time and queries for the state of the world at predefined time steps (determined by the framerate of the video). Therefore, unlike other benchmark toolkits (e.g., COCO toolkit) which run in a post-processing fashion, our toolkit is a daemon process that runs along side with the algorithm process.
 
 ## Getting started
   1. Follow the instructions [here](https://github.com/mtli/sAP/blob/master/doc/data_setup.md) to download and set up the dataset.
@@ -16,9 +15,9 @@ As shown in the figure below, a streaming perception benchmark sends frames to t
 
 ## Running the baselines
 
-The baselines we provide show you how to use the API provided by our `sap_toolkit` package in your algorithm in order to communicate with the benchmark toolkit. You can take a look at the python code provided in `det_baseline.py` and `forecast_baseline.py` to see our implementations. There are also versions of these scripts (ending in `_perf.py`) that measure a few runtime metrics such as detection time, association time and forecasting time.
+The baselines we provide show you how to use the APIs provided by our `sap_toolkit` package in your algorithm in order to communicate with the benchmark toolkit. You can take a look at the python code provided in `det_baseline.py` and `forecast_baseline.py` to see our implementations. There are also versions of these scripts (ending in `_perf.py`) that measure a few runtime metrics such as detection time, association time and forecasting time.
 
-Further documentation on the `sap_toolkit` can be found [here].(https://github.com/karthiksharma98/sap-starterkit/tree/master/sap-toolkit)
+Further documentation on the `sap_toolkit` can be found [here](https://github.com/karthiksharma98/sap-starterkit/tree/master/sap-toolkit).
 
 ## Upload your results to the challenge website
 
@@ -36,7 +35,7 @@ This method uses the Mask-RCNN (with ResNet-FPN-50 backbone) single-frame object
 
 This uses the same detector as above, however it incorporates a few techniques from the paper - dynamic scheduling, association and forecasting using a Kalman filter. This is explained in the figure below (taken from Fig. 7 from the paper).
 
-![fig7](fig7.png)
+![fig7](doc/img/fig7.png)
 
 ## Advanced topics for development
 
