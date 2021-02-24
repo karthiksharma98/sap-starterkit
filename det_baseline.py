@@ -78,7 +78,7 @@ def run():
         # get the time when stream's first frame was received
         t_start = eval_client.get_stream_start_time()
 
-        count_detections = 1
+        count_detections = 0
         while fid is not None:
 
             t1 = perf_counter()

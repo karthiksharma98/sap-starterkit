@@ -76,7 +76,7 @@ def detector_process():
 
         runtime = []
 
-        count_detections = 1
+        count_detections = 0
         while fid is not None:
  
             t1 = perf_counter()
