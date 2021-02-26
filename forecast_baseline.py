@@ -171,11 +171,11 @@ def main():
                 # identify latest available frame
                 fidx, _ = eval_client.get_frame()
 
-                # for dynamic scheduling
-                fidx_continous = t_elapsed*opts.fps
-
                 if fidx is None:
                     break
+
+                # for dynamic scheduling
+                fidx_continous = t_elapsed*opts.fps
 
                 if fidx == fidx_latest:
                     # algorithm is fast and has some idle time

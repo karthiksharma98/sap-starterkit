@@ -87,6 +87,9 @@ def run():
             # identify latest available frame
             fid, frame = eval_client.get_frame()
 
+            if fid is None:
+                break
+
             # for dynamic scheduling
             fid_continous = t_elapsed*opts.fps
 

@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name = "sap-toolkit",
-    version = "0.0.5",
+    version = "0.0.7",
     url = "https://github.com/karthiksharma98/sap-starterkit/tree/master/sap-toolkit",
     author = "Kartikeya Sharma",
     author_email = "ksharma@illinois.edu",
@@ -17,7 +17,8 @@ setuptools.setup(
     packages = setuptools.find_packages(),
     install_requires=[
         'grpcio',
-        'grpcio-tools'
+        'grpcio-tools',
+        'pycocotools'
     ],
     long_description = long_description,
     long_description_content_type = "text/markdown",
