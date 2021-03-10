@@ -1,5 +1,3 @@
-# For documentation, please refer to "doc/tasks.md"
-
 dataDir="/home/ubuntu/data"
 
 methodName=mrcnn50_nm
