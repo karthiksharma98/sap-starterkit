@@ -18,6 +18,10 @@ import cmd
 import time
 import json
 
+# suppress shared memory warnings
+import warnings
+warnings.filterwarnings("ignore")
+
 # multiprocessing
 import multiprocessing as mp
 from multiprocessing import shared_memory
@@ -147,7 +151,14 @@ class ResultServiceServicer(eval_server_pb2_grpc.ResultServiceServicer):
         self.time_rcv = []
         self.log = log
 
+        # max 100 detections, bbox - 4, score - 1, label - 1; 4 bytes for np.float32
+        self.results_shm = shared_memory.SharedMemory(create=True, size=100*6*4)
+        self.results_np = np.ndarray((100, 6), dtype=np.float32, buffer=self.results_shm.buf)
+
         mkdir2(self.opts.out_dir)
+
+    def GetShm(self, request, context):
+        return eval_server_pb2.String(value=self.results_shm.name)
     
     def reset_state(self):
         self.timestamps = []
@@ -169,25 +180,15 @@ class ResultServiceServicer(eval_server_pb2_grpc.ResultServiceServicer):
         self.reset_state()
         return eval_server_pb2.Empty()
 
-    def PutResultStream(self, result_iterator, context):
-        for result in result_iterator:
-            self.timestamps.append((perf_counter() - self.sequence_start_times_dict[self.current_sid.value])/self.opts.perf_factor)
-            self.time_rcv.append(perf_counter() - result.timestamp)
-            bboxes = np.ndarray((len(result.bboxes), 4), dtype=np.float32)
-            bbox_scores = np.ndarray((len(result.bbox_scores),), dtype=np.float32)
-            labels = np.ndarray((len(result.labels),), dtype=np.int64)
-            for i in range(len(result.bboxes)):
-                bboxes[i][0] = result.bboxes[i].x1
-                bboxes[i][1] = result.bboxes[i].y1
-                bboxes[i][2] = result.bboxes[i].x2
-                bboxes[i][3] = result.bboxes[i].y2
-                bbox_scores[i] = result.bbox_scores[i]
-                labels[i] = result.labels[i]
-            self.results_parsed.append((bboxes, bbox_scores, labels, None))
-        return eval_server_pb2.Empty()
-
     def GenResults(self, request, context):
         gen_results(self.db, self.opts, request.value)
+        return eval_server_pb2.Empty()
+
+    def SignalResultsReady(self, request, context):
+        self.timestamps.append((perf_counter() - self.sequence_start_times_dict[self.current_sid.value])/self.opts.perf_factor)
+        self.time_rcv.append(perf_counter() - request.timestamp)
+        res_tuple = (self.results_np[:request.num_bboxes, :4].copy(), self.results_np[:request.num_bboxes, 4].copy(), self.results_np[:request.num_bboxes, 5].astype(np.int64).copy(), None)
+        self.results_parsed.append(res_tuple)
         return eval_server_pb2.Empty()
 
 def result_server(opts, db, current_sid, sequence_start_times, res_rcv, log):

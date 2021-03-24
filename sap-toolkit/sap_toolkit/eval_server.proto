@@ -22,11 +22,8 @@ message Bbox {
 }
 
 message Result {
-    repeated Bbox bboxes = 1;
-    repeated double bbox_scores=2;
-    repeated int32 labels = 3;
-    int64 fid = 4;
-    double timestamp = 5;
+    double timestamp = 1;
+    int32 num_bboxes = 2;
 }
 
 message Empty{}
@@ -38,7 +35,8 @@ service ImageService {
 }
 
 service ResultService {
-    rpc PutResultStream(stream Result) returns (Empty) {}
+    rpc SignalResultsReady(Result) returns (Empty) {}
     rpc FinishSequence(Empty) returns (Empty) {}
     rpc GenResults(String) returns (Empty) {}
+    rpc GetShm(Empty) returns (String) {}
 }

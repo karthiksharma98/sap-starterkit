@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x11\x65val_server.proto\"l\n\x05\x46rame\x12\x0b\n\x03\x66id\x18\x01 \x01(\x05\x12\x11\n\tstart_ptr\x18\x02 \x01(\x03\x12\x0f\n\x07\x65nd_ptr\x18\x03 \x01(\x03\x12\x0b\n\x03sid\x18\x04 \x01(\x05\x12\x12\n\nend_marker\x18\x06 \x01(\x08\x12\x11\n\ttimestamp\x18\x07 \x01(\x01\"\x17\n\x06String\x12\r\n\x05value\x18\x01 \x01(\t\"6\n\x04\x42\x62ox\x12\n\n\x02x1\x18\x01 \x01(\x01\x12\n\n\x02y1\x18\x02 \x01(\x01\x12\n\n\x02x2\x18\x03 \x01(\x01\x12\n\n\x02y2\x18\x04 \x01(\x01\"d\n\x06Result\x12\x15\n\x06\x62\x62oxes\x18\x01 \x03(\x0b\x32\x05.Bbox\x12\x13\n\x0b\x62\x62ox_scores\x18\x02 \x03(\x01\x12\x0e\n\x06labels\x18\x03 \x03(\x05\x12\x0b\n\x03\x66id\x18\x04 \x01(\x03\x12\x11\n\ttimestamp\x18\x05 \x01(\x01\"\x07\n\x05\x45mpty2R\n\x0cImageService\x12%\n\x0eGetImageStream\x12\x07.String\x1a\x06.Frame\"\x00\x30\x01\x12\x1b\n\x06GetShm\x12\x06.Empty\x1a\x07.String\"\x00\x32|\n\rResultService\x12&\n\x0fPutResultStream\x12\x07.Result\x1a\x06.Empty\"\x00(\x01\x12\"\n\x0e\x46inishSequence\x12\x06.Empty\x1a\x06.Empty\"\x00\x12\x1f\n\nGenResults\x12\x07.String\x1a\x06.Empty\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x11\x65val_server.proto\"l\n\x05\x46rame\x12\x0b\n\x03\x66id\x18\x01 \x01(\x05\x12\x11\n\tstart_ptr\x18\x02 \x01(\x03\x12\x0f\n\x07\x65nd_ptr\x18\x03 \x01(\x03\x12\x0b\n\x03sid\x18\x04 \x01(\x05\x12\x12\n\nend_marker\x18\x06 \x01(\x08\x12\x11\n\ttimestamp\x18\x07 \x01(\x01\"\x17\n\x06String\x12\r\n\x05value\x18\x01 \x01(\t\"6\n\x04\x42\x62ox\x12\n\n\x02x1\x18\x01 \x01(\x01\x12\n\n\x02y1\x18\x02 \x01(\x01\x12\n\n\x02x2\x18\x03 \x01(\x01\x12\n\n\x02y2\x18\x04 \x01(\x01\"/\n\x06Result\x12\x11\n\ttimestamp\x18\x01 \x01(\x01\x12\x12\n\nnum_bboxes\x18\x02 \x01(\x05\"\x07\n\x05\x45mpty2R\n\x0cImageService\x12%\n\x0eGetImageStream\x12\x07.String\x1a\x06.Frame\"\x00\x30\x01\x12\x1b\n\x06GetShm\x12\x06.Empty\x1a\x07.String\"\x00\x32\x9a\x01\n\rResultService\x12\'\n\x12SignalResultsReady\x12\x07.Result\x1a\x06.Empty\"\x00\x12\"\n\x0e\x46inishSequence\x12\x06.Empty\x1a\x06.Empty\"\x00\x12\x1f\n\nGenResults\x12\x07.String\x1a\x06.Empty\"\x00\x12\x1b\n\x06GetShm\x12\x06.Empty\x1a\x07.String\"\x00\x62\x06proto3'
 )
 
 
@@ -186,37 +186,16 @@ _RESULT = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='bboxes', full_name='Result.bboxes', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='bbox_scores', full_name='Result.bbox_scores', index=1,
-      number=2, type=1, cpp_type=5, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='labels', full_name='Result.labels', index=2,
-      number=3, type=5, cpp_type=1, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='fid', full_name='Result.fid', index=3,
-      number=4, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='timestamp', full_name='Result.timestamp', index=4,
-      number=5, type=1, cpp_type=5, label=1,
+      name='timestamp', full_name='Result.timestamp', index=0,
+      number=1, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='num_bboxes', full_name='Result.num_bboxes', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -233,7 +212,7 @@ _RESULT = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=212,
-  serialized_end=312,
+  serialized_end=259,
 )
 
 
@@ -257,11 +236,10 @@ _EMPTY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=314,
-  serialized_end=321,
+  serialized_start=261,
+  serialized_end=268,
 )
 
-_RESULT.fields_by_name['bboxes'].message_type = _BBOX
 DESCRIPTOR.message_types_by_name['Frame'] = _FRAME
 DESCRIPTOR.message_types_by_name['String'] = _STRING
 DESCRIPTOR.message_types_by_name['Bbox'] = _BBOX
@@ -313,8 +291,8 @@ _IMAGESERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=323,
-  serialized_end=405,
+  serialized_start=270,
+  serialized_end=352,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetImageStream',
@@ -349,12 +327,12 @@ _RESULTSERVICE = _descriptor.ServiceDescriptor(
   index=1,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=407,
-  serialized_end=531,
+  serialized_start=355,
+  serialized_end=509,
   methods=[
   _descriptor.MethodDescriptor(
-    name='PutResultStream',
-    full_name='ResultService.PutResultStream',
+    name='SignalResultsReady',
+    full_name='ResultService.SignalResultsReady',
     index=0,
     containing_service=None,
     input_type=_RESULT,
@@ -379,6 +357,16 @@ _RESULTSERVICE = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_STRING,
     output_type=_EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetShm',
+    full_name='ResultService.GetShm',
+    index=3,
+    containing_service=None,
+    input_type=_EMPTY,
+    output_type=_STRING,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),

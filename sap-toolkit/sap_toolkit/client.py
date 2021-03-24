@@ -15,22 +15,9 @@ import multiprocessing as mp
 from multiprocessing import shared_memory
 from threading import Thread
 
-
-def get_grpc_result(bboxes, scores, labels):
-    if len(bboxes) != len(scores) or len(bboxes) != len(labels):
-        raise ValueError('number of bboxes, labels, bbox_scores must be same')
-    res = eval_server_pb2.Result()
-    for i in range(len(bboxes)):
-        bbox = eval_server_pb2.Bbox()
-        bbox.x1 = bboxes[i][0]
-        bbox.y1 = bboxes[i][1]
-        bbox.x2 = bboxes[i][2]
-        bbox.y2 = bboxes[i][3]
-
-        res.bboxes.append(bbox)
-        res.bbox_scores.append(scores[i])
-        res.labels.append(labels[i])
-    return res
+# suppress shared memory warnings
+import warnings
+warnings.filterwarnings("ignore")
 
 # receive input fidx streamed by server, store them in a list
 def receive_stream(seq, latest_fidx, fid_ptr_dict, is_stream_ready, stream_start_time, config, verbose=False):
@@ -92,14 +79,12 @@ class EvalClient:
         self.result_channel = grpc.insecure_channel(config['loopback_ip'] + ":" + str(config['result_service_port']))
         self.result_stub = eval_server_pb2_grpc.ResultServiceStub(self.result_channel)
 
+        response = self.result_stub.GetShm(eval_server_pb2.Empty())
+        self.results_shm = shared_memory.SharedMemory(name=response.value)
+        self.results_np = np.ndarray((100, 6), dtype=np.float32, buffer=self.results_shm.buf)
+
         self.is_stream_ready.clear()
         self.stream_process = None
-
-        self.latest_grpc_result = None
-        self.grpc_result_ready = mp.Event()
-        self.grpc_result_ready.clear()
-        self.sequence_ended = False
-        self.res_thread = None
 
     def get_state(self):
         return (self.latest_fidx, self.is_stream_ready, self.fid_ptr_dict)
@@ -108,35 +93,14 @@ class EvalClient:
         self.result_stub.GenResults(eval_server_pb2.String(value=results_file))
         self.result_channel.close()
 
-    def result_stream_iterator(self):
-        while 1:
-            self.grpc_result_ready.wait()
-            if self.sequence_ended:
-                break
-            yield self.latest_grpc_result
-            self.grpc_result_ready.clear()
-
-    def send_result_stream(self):
-        result_iterator = self.result_stream_iterator()
-        response = self.result_stub.PutResultStream(result_iterator)
-
     def stop_stream(self):
         self.stream_process.join()
         self.result_stub.FinishSequence(eval_server_pb2.Empty())
         self.is_stream_ready.clear()
-
         self.stream_process = None
-        self.sequence_ended = True
-        self.grpc_result_ready.set()
-        self.res_thread.join()
 
     def request_stream(self, seq):
-        self.sequence_ended = False
-        self.grpc_result_ready.clear()
-        self.res_thread = Thread(target=self.send_result_stream)
-        self.res_thread.start()
-        
-        # fid_stream_receiver as processs
+        # receiver as separate processs
         self.stream_process = mp.Process(target=receive_stream, args=(seq, self.latest_fidx, self.fid_ptr_dict, self.is_stream_ready, self.stream_start_time, self.config, self.verbose))
         self.stream_process.start()
 
@@ -157,17 +121,18 @@ class EvalClient:
         if ptr:
             return fid, int(start_ptr/(self.img_height*self.img_width*3))
         return fid, np.ndarray((self.img_height, self.img_width, 3), dtype=np.uint8, buffer=self.existing_shm.buf[start_ptr:end_ptr])
-    
-    def send_result_async(self, bboxes, bbox_scores, labels):
-        timestamp = perf_counter()
-        grpc_result = get_grpc_result(bboxes, bbox_scores, labels)
-        grpc_result.timestamp = timestamp
-        self.latest_grpc_result = grpc_result
-        self.grpc_result_ready.set()
+
+    def send_result_shm(self, bboxes, bbox_scores, labels, timestamp):
+        num_detections = min(len(bboxes), 100)
+        self.results_np[:num_detections, :4] = bboxes[:num_detections]
+        self.results_np[:num_detections, 4] = bbox_scores[:num_detections]
+        self.results_np[:num_detections, 5] = labels[:num_detections]
+        self.result_stub.SignalResultsReady(eval_server_pb2.Result(timestamp=timestamp, num_bboxes=num_detections))
 
     def send_result_to_server(self, bboxes, bbox_scores, labels):
-        a = Thread(target=self.send_result_async, args=(bboxes, bbox_scores, labels))
-        a.start()
+        timestamp = perf_counter()
+        res_thread = Thread(target=self.send_result_shm, args=(bboxes, bbox_scores, labels, timestamp))
+        res_thread.start()
 
     def get_frame_buf(self):
         return self.existing_shm

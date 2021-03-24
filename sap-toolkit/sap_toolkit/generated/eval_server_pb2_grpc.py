@@ -111,8 +111,8 @@ class ResultServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.PutResultStream = channel.stream_unary(
-                '/ResultService/PutResultStream',
+        self.SignalResultsReady = channel.unary_unary(
+                '/ResultService/SignalResultsReady',
                 request_serializer=eval__server__pb2.Result.SerializeToString,
                 response_deserializer=eval__server__pb2.Empty.FromString,
                 )
@@ -126,12 +126,17 @@ class ResultServiceStub(object):
                 request_serializer=eval__server__pb2.String.SerializeToString,
                 response_deserializer=eval__server__pb2.Empty.FromString,
                 )
+        self.GetShm = channel.unary_unary(
+                '/ResultService/GetShm',
+                request_serializer=eval__server__pb2.Empty.SerializeToString,
+                response_deserializer=eval__server__pb2.String.FromString,
+                )
 
 
 class ResultServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def PutResultStream(self, request_iterator, context):
+    def SignalResultsReady(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -149,11 +154,17 @@ class ResultServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetShm(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ResultServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'PutResultStream': grpc.stream_unary_rpc_method_handler(
-                    servicer.PutResultStream,
+            'SignalResultsReady': grpc.unary_unary_rpc_method_handler(
+                    servicer.SignalResultsReady,
                     request_deserializer=eval__server__pb2.Result.FromString,
                     response_serializer=eval__server__pb2.Empty.SerializeToString,
             ),
@@ -167,6 +178,11 @@ def add_ResultServiceServicer_to_server(servicer, server):
                     request_deserializer=eval__server__pb2.String.FromString,
                     response_serializer=eval__server__pb2.Empty.SerializeToString,
             ),
+            'GetShm': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetShm,
+                    request_deserializer=eval__server__pb2.Empty.FromString,
+                    response_serializer=eval__server__pb2.String.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'ResultService', rpc_method_handlers)
@@ -178,7 +194,7 @@ class ResultService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def PutResultStream(request_iterator,
+    def SignalResultsReady(request,
             target,
             options=(),
             channel_credentials=None,
@@ -188,7 +204,7 @@ class ResultService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.stream_unary(request_iterator, target, '/ResultService/PutResultStream',
+        return grpc.experimental.unary_unary(request, target, '/ResultService/SignalResultsReady',
             eval__server__pb2.Result.SerializeToString,
             eval__server__pb2.Empty.FromString,
             options, channel_credentials,
@@ -225,5 +241,22 @@ class ResultService(object):
         return grpc.experimental.unary_unary(request, target, '/ResultService/GenResults',
             eval__server__pb2.String.SerializeToString,
             eval__server__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetShm(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/ResultService/GetShm',
+            eval__server__pb2.Empty.SerializeToString,
+            eval__server__pb2.String.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
