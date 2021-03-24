@@ -19,12 +19,11 @@ import time
 import json
 
 # suppress shared memory warnings
-import warnings
-warnings.filterwarnings("ignore")
+from .utils import remove_shm_from_resource_tracker
 
 # multiprocessing
 import multiprocessing as mp
-from multiprocessing import shared_memory
+from multiprocessing import shared_memory, resource_tracker
 from pycocotools.coco import COCO
 
 # utils
@@ -68,7 +67,6 @@ class ImageServiceServicer(eval_server_pb2_grpc.ImageServiceServicer):
             seq_len = [len([img for img in self.db.imgs.values() if img['sid'] == sid])
                 for sid in range(len(self.seqs))]
             self.max_seq_len = max(seq_len)
-
         self.shm = shared_memory.SharedMemory(create=True, size=(self.max_seq_len+2)*self.img_height*self.img_width*3)
 
     def close(self):
@@ -157,6 +155,10 @@ class ResultServiceServicer(eval_server_pb2_grpc.ResultServiceServicer):
 
         mkdir2(self.opts.out_dir)
 
+    def close(self):
+        self.results_shm.close()
+        self.results_shm.unlink()
+
     def GetShm(self, request, context):
         return eval_server_pb2.String(value=self.results_shm.name)
     
@@ -176,7 +178,7 @@ class ResultServiceServicer(eval_server_pb2_grpc.ResultServiceServicer):
                 'timestamps': self.timestamps
             }, open(out_path, 'wb'))
 
-        print(datetime.now(), ": ", "Mean time receive = ", np.mean(self.time_rcv), ", stdev = ", np.std(self.time_rcv), ", min = ", np.min(self.time_rcv), ", max = ", np.max(self.time_rcv), file=self.log)
+        # print(datetime.now(), ": ", "Mean time receive = ", np.mean(self.time_rcv), ", stdev = ", np.std(self.time_rcv), ", min = ", np.min(self.time_rcv), ", max = ", np.max(self.time_rcv), file=self.log)
         self.reset_state()
         return eval_server_pb2.Empty()
 
@@ -194,6 +196,7 @@ class ResultServiceServicer(eval_server_pb2_grpc.ResultServiceServicer):
 def result_server(opts, db, current_sid, sequence_start_times, res_rcv, log):
     print('Starting ResultService RPC Server. Listening on port ' + str(config['result_service_port']))
 
+    remove_shm_from_resource_tracker()
     result_server = grpc.server(futures.ThreadPoolExecutor(max_workers=12))
     result_servicer = ResultServiceServicer(opts, db, current_sid, sequence_start_times, log)
     eval_server_pb2_grpc.add_ResultServiceServicer_to_server(result_servicer, result_server)
@@ -201,6 +204,7 @@ def result_server(opts, db, current_sid, sequence_start_times, res_rcv, log):
     result_server.start()
     msg = res_rcv.recv()
     if msg == 'terminate':
+        result_servicer.close()
         result_server.stop(None)
 
 class EvalShell(cmd.Cmd):
@@ -246,7 +250,8 @@ if __name__ == '__main__':
         config = json.load(open(opts.eval_config, 'r'))
     else:
         config = {"image_service_port": 5007, "result_service_port": 5008, "loopback_ip": "127.0.0.1"}
-        
+    
+    remove_shm_from_resource_tracker()
     with open(opts.log, 'w+', 1) as log:
         # create dictionary to store current sequence and start times for each sequence stream
         current_sid = mp.Value('i', 0)

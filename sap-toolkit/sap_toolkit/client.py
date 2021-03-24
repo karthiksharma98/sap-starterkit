@@ -12,12 +12,12 @@ from datetime import datetime
 
 # multiprocessing 
 import multiprocessing as mp
-from multiprocessing import shared_memory
+from multiprocessing import shared_memory, resource_tracker
 from threading import Thread
 
 # suppress shared memory warnings
-import warnings
-warnings.filterwarnings("ignore")
+from .utils import remove_shm_from_resource_tracker
+remove_shm_from_resource_tracker()
 
 # receive input fidx streamed by server, store them in a list
 def receive_stream(seq, latest_fidx, fid_ptr_dict, is_stream_ready, stream_start_time, config, verbose=False):
@@ -43,10 +43,9 @@ def receive_stream(seq, latest_fidx, fid_ptr_dict, is_stream_ready, stream_start
         if response.fid >= 0:
             is_stream_ready.set()
         send_times.append(perf_counter() - response.timestamp)
-    
-    # print("EvalClient (", datetime.now(), "): ", "Mean sending time = ", np.mean(send_times), "s, stdev = ", np.std(send_times))
-    # print("EvalClient (", datetime.now(), "): ", "Max/min sending time = ", np.max(send_times), np.min(send_times))
-    # print("EvalClient (", datetime.now(), "): ", "Histogram = ", np.histogram(send_times))
+
+    # if verbose:
+    #     print("EvalClient (", datetime.now(), "): ", "Mean sending time = ", np.mean(send_times), "s, stdev = ", np.std(send_times), "Max = ", np.max(send_times), "Min = ", np.min(send_times))
 
     channel.close()
 
@@ -66,12 +65,14 @@ class EvalClient:
             self.is_stream_ready = state[1]
             self.fid_ptr_dict = state[2]
 
+        
         self.verbose = verbose
         # create image receiver stub
         self.channel = grpc.insecure_channel(config['loopback_ip'] + ":" + str(config['image_service_port']))
         self.config = config
         self.stub = eval_server_pb2_grpc.ImageServiceStub(self.channel)
         response = self.stub.GetShm(eval_server_pb2.Empty())
+
         self.existing_shm = shared_memory.SharedMemory(name=response.value)
         self.channel.close()
 
@@ -86,12 +87,16 @@ class EvalClient:
         self.is_stream_ready.clear()
         self.stream_process = None
 
+        self.result_thread = None
+
     def get_state(self):
         return (self.latest_fidx, self.is_stream_ready, self.fid_ptr_dict)
 
     def close(self, results_file='results.json'):
         self.result_stub.GenResults(eval_server_pb2.String(value=results_file))
         self.result_channel.close()
+        self.existing_shm.close()
+        self.results_shm.close()
 
     def stop_stream(self):
         self.stream_process.join()
@@ -131,8 +136,10 @@ class EvalClient:
 
     def send_result_to_server(self, bboxes, bbox_scores, labels):
         timestamp = perf_counter()
-        res_thread = Thread(target=self.send_result_shm, args=(bboxes, bbox_scores, labels, timestamp))
-        res_thread.start()
+        if self.result_thread:
+            self.result_thread.join()
+        self.result_thread = Thread(target=self.send_result_shm, args=(bboxes, bbox_scores, labels, timestamp))
+        self.result_thread.start()
 
     def get_frame_buf(self):
         return self.existing_shm
