@@ -117,14 +117,14 @@ The parameters for the various scripts are explained below:
 - `--config`: Provides the configuration file for the mmdetection model. Can be found in the mmdetection repo.
 - `--weights`: Provides the weights for the mmdetection model. Can be downloaded from the [model zoo](https://github.com/open-mmlab/mmdetection/blob/v2.7.0/docs/model_zoo.md).
 - `--in-scale`: Input scale for the mmdetection model. We use 1.0 for our baselines. This is the scale relative to the size of images in the Argoverse-HD dataset. So a scale of 1.0 refers to images with resolution 1920x1200 whereas a scale of 0.5 would be images resized to 960x600.
-- `--annot-path`: Same as in start_server.sh described above.
-- `--eval-config`: Same as in start_server.sh described above.
-- `--perf-factor`: Same as in start_server.sh described above.
+- `--annot-path`: Same as in start_toolkit.sh described above.
+- `--eval-config`: Same as in start_toolkit.sh described above.
+- `--perf-factor`: Same as in start_toolkit.sh described above.
 
 
 ## Setup verification
 
-If you have set up correctly, running `start_toolkit.sh` followed by  `start_det_baseline.sh` and then typing `evaluate results.json` on the evaluation server CLI once the second script has finished running should be able to get you an AP of ~15.5 on the validation set: (This number may vary based on hardware. We obtain this baseline on a Tesla V100 GPU on an AWS p3.2x instance, for Mask RCNN FPN R50 with input scale 1.0).
+If you have set up correctly, running `start_toolkit.sh` followed by  `start_det_baseline.sh` and then typing `evaluate results.json` on the benchmark toolkit CLI once the second script has finished running should be able to get you an AP of ~15.5 on the validation set: (This number may vary based on hardware. We obtain this baseline on a Tesla V100 GPU on an AWS p3.2x instance, for Mask RCNN FPN R50 with input scale 1.0).
 ```
 Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.155
 ```
