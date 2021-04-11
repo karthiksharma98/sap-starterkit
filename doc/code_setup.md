@@ -119,6 +119,7 @@ The parameters for the various scripts are explained below:
 - `--in-scale`: Input scale for the mmdetection model. We use 1.0 for our baselines. This is the scale relative to the size of images in the Argoverse-HD dataset. So a scale of 1.0 refers to images with resolution 1920x1200 whereas a scale of 0.5 would be images resized to 960x600.
 - `--annot-path`: Same as in start_server.sh described above.
 - `--eval-config`: Same as in start_server.sh described above.
+- `--perf-factor`: Same as in start_server.sh described above.
 
 
 ## Setup verification
