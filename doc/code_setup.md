@@ -112,7 +112,7 @@ The parameters for the various scripts are explained below:
 - `evaluate <filename>`: If annotations are provided, run a local evaluation and generate evaluation metrics for the provided .json file with the given filename.
 - `help`: show help
 
-1. `start_det_baseline.sh` / `start_fs_baseline.sh`: These scripts are used to run the illustrative examples for the detection-only and detection+forecasting settings respectively. The parameters are:
+2. `start_det_baseline.sh` / `start_fs_baseline.sh`: These scripts are used to run the illustrative examples for the detection-only and detection+forecasting settings respectively. The parameters are:
 
 - `--config`: Provides the configuration file for the mmdetection model. Can be found in the mmdetection repo.
 - `--weights`: Provides the weights for the mmdetection model. Can be downloaded from the [model zoo](https://github.com/open-mmlab/mmdetection/blob/v2.7.0/docs/model_zoo.md).
