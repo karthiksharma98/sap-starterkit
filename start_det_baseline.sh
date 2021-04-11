@@ -1,4 +1,4 @@
-dataDir=dataDir="/home/ubuntu/data"
+dataDir="/home/ubuntu/data"
 
 methodName=mrcnn50_nm
 scale=1.0
