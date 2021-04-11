@@ -100,7 +100,7 @@ class ImageServiceServicer(eval_server_pb2_grpc.ImageServiceServicer):
             
             last_fidx = None
             
-            t_total = (n_frame)/self.fps
+            t_total = (n_frame)/(self.fps*self.opts.perf_factor)
             t_start = perf_counter()
             
             frames_processed = 0
@@ -115,10 +115,11 @@ class ImageServiceServicer(eval_server_pb2_grpc.ImageServiceServicer):
                     break
 
                 # identify latest available frame
-                fidx = int(np.floor(t_elapsed*self.fps))
+                fidx = int(np.floor(t_elapsed*self.fps*self.opts.perf_factor))
+                
                 if fidx == last_fidx:
                     continue
-                    
+
                 frames_processed += 1
                 last_fidx = fidx
                 
@@ -187,7 +188,7 @@ class ResultServiceServicer(eval_server_pb2_grpc.ResultServiceServicer):
         return eval_server_pb2.Empty()
 
     def SignalResultsReady(self, request, context):
-        self.timestamps.append((perf_counter() - self.sequence_start_times_dict[self.current_sid.value])/self.opts.perf_factor)
+        self.timestamps.append((perf_counter() - self.sequence_start_times_dict[self.current_sid.value])*self.opts.perf_factor)
         self.time_rcv.append(perf_counter() - request.timestamp)
         res_tuple = (self.results_np[:request.num_bboxes, :4].copy(), self.results_np[:request.num_bboxes, 4].copy(), self.results_np[:request.num_bboxes, 5].astype(np.int64).copy(), None)
         self.results_parsed.append(res_tuple)

@@ -26,6 +26,7 @@ def parse_args():
     parser.add_argument('--cpu-pre', action='store_true', default=False)
     parser.add_argument('--fps', type=float, default=30)
     parser.add_argument('--dynamic-schedule', action='store_true', default=False)
+    parser.add_argument('--perf-factor', type=float, default=1)
     opts = parser.parse_args()
     return opts
 
@@ -54,7 +55,7 @@ def detector_process():
     print("Loading model")
     model = get_model(opts)
 
-    eval_client = EvalClient(config, verbose=False)
+    eval_client = EvalClient(config, verbose=True)
 
     runtime_all = []
 
@@ -89,7 +90,7 @@ def detector_process():
                 break
 
             # for dynamic scheduling
-            fid_continous = t_elapsed*opts.fps
+            fid_continous = t_elapsed*opts.fps*opts.perf_factor
 
             if fid == fid_latest:
                 # algorithm is fast and has some idle time
@@ -113,7 +114,7 @@ def detector_process():
 
             # calculate new runtime mean for dynamic scheduling
             if opts.dynamic_schedule:
-                sum_rtf = mean_rtf*count_detections + t_det*opts.fps
+                sum_rtf = mean_rtf*count_detections + t_det*opts.fps*opts.perf_factor
                 count_detections += 1
                 mean_rtf = sum_rtf/count_detections
 

@@ -51,11 +51,11 @@ def parse_args():
     parser.add_argument('--cpu-pre', action='store_true', default=False)
     
     parser.add_argument('--dynamic-schedule', action='store_true', default=False)
-    parser.add_argument('--perf-factor', type=float, default=1)
 
     parser.add_argument('--match-iou-th', type=float, default=0.3)
     parser.add_argument('--forecast-rt-ub', type=float, default=0.003) # seconds
     parser.add_argument('--overwrite', action='store_true', default=False)
+    parser.add_argument('--perf-factor', type=float, default=1)
 
     opts = parser.parse_args()
     return opts
@@ -175,7 +175,7 @@ def main():
                     break
 
                 # for dynamic scheduling
-                fidx_continous = t_elapsed*opts.fps
+                fidx_continous = t_elapsed*opts.fps*opts.perf_factor
 
                 if fidx == fidx_latest:
                     # algorithm is fast and has some idle time
@@ -205,7 +205,7 @@ def main():
                     # new result received
                     result, t_det = det_res_recv.recv() 
                     if opts.dynamic_schedule:
-                        sum_rtf = mean_rtf*count_detections + t_det*opts.fps
+                        sum_rtf = mean_rtf*count_detections + t_det*opts.fps*opts.perf_factor
                         count_detections += 1
                         mean_rtf = sum_rtf/count_detections
                     
