@@ -7,7 +7,7 @@ import json
 import pickle
 import os
 from tqdm import tqdm
-from os.path import join
+from os.path import join, isfile
 
 FPS = 30
 

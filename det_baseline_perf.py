@@ -142,7 +142,7 @@ def detector_process():
 
         runtime = np.asarray(runtime)
         s2ms = lambda x: 1e3*x
-        print_stats(runtime, 'Runtime per frame for seq ' + str(seq) + '(ms)', cvt=s2ms)
+        print_stats(runtime, 'Runtime per frame for seq ' + str(seq) + ' (ms)', cvt=s2ms)
 
     runtime_all_np = np.asarray(runtime_all)
     # convert to ms for display
