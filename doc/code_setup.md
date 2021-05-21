@@ -1,7 +1,7 @@
 # Code Setup
 
 ## Environment
-You need an environment that has python>=3.8 and CUDA installed. 
+You need a Linux environment that has python>=3.8 and CUDA installed.
 
 ## Installing benchmark toolkit
 
