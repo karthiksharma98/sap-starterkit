@@ -5,7 +5,6 @@ channels:
 dependencies:
 - python=3.8
 - Cython
-- numpy
 - tqdm
 - scikit-image
 - pytorch=1.6.0
@@ -14,4 +13,5 @@ dependencies:
 - pip
 - pip:
   - pycocotools@git+https://github.com/open-mmlab/cocoapi.git#subdirectory=pycocotools
+  - numpy>=1.20
   - html4vision
