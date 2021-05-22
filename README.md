@@ -8,10 +8,12 @@ The benchmark toolkit sends frames to the algorithm in real-time and queries for
 
 ## Getting started
   1. Follow the instructions [here](https://github.com/mtli/sAP/blob/master/doc/data_setup.md) to download and set up the dataset.
-  2. Follow the instructions [here](doc/code_setup.md) to setup the required libraries.
-  3. Run the toolkit and baselines:
-       - First, run `start_toolkit.sh`. This will launch the benchmark toolkit daemon locally with a command-line interface (CLI). You can type `?` for help.
-       - Then, run either `start_det_baseline.sh` (for detection-only baseline) or `start_fs_baseline.sh` (for detection+forecasting baseline) as required. Once this has completed running, a `results.json` file will be generated in the output directory. If annotations are available (for e.g. validation set), you can type `evaluate results.json` in the evaluation server CLI to evaluate locally. For test set, evaluation can only be performed on the [challenge website](https://eval.ai/web/challenges/challenge-page/800/overview) by uploading the `results.json` file.
+  1. Follow the instructions [here](doc/code_setup.md) to setup the required libraries.
+  1. Run the toolkit and baselines:
+       1. First, run `start_toolkit.sh`. This will launch the benchmark toolkit daemon locally with a command-line interface (CLI). You can type `?` for help.
+       1. Then, run either `start_det_baseline.sh` (for detection-only baseline) or `start_fs_baseline.sh` (for detection+forecasting baseline) as required. Once this has completed running, a `results.json` file will be generated in the output directory.
+       1. If annotations are available (e.g., for the val set), you can type `evaluate results.json` in the evaluation server CLI to evaluate locally.
+       1. For the test set, evaluation can only be performed on the [challenge website](https://eval.ai/web/challenges/challenge-page/800/overview) by uploading the `results.json` file.
 
 Further documentation on the `sap_toolkit` can be found [here](https://github.com/karthiksharma98/sap-starterkit/tree/master/sap-toolkit). The scripts ending in `_perf.py` are variants that measure a few additional runtime metrics such as detection time, association time and forecasting time.
 
