@@ -1,5 +1,12 @@
 # sap-starterkit
 
+<b>UPDATE (05/28/2021): We will host two office hours for any questions you have at
+10-11pm Jun 1st (EDT)
+[<a target="_blank" href="https://cmu.zoom.us/j/98380272281?pwd=QzFCU1gwS1UrL092MGt6djFZR1oxZz09">Zoom link</a>]
+and 10-11am Jun 3rd (EDT)
+[<a target="_blank" href="https://cmu.zoom.us/j/91673157392?pwd=NGx1NTBQNmNJQjBVQlBVRmFaUEJEZz09">Zoom link</a>].</b>
+<br>
+
 This repo is the starter kit for the [Streaming Perception Challenge](https://eval.ai/web/challenges/challenge-page/800/overview) to be held as part of the Workshop on Autonomous Driving at CVPR 2021. It contains a benchmark toolkit for measuring algorithm's performance and several baseline methods to get you started. The benchmark toolkit and the provided APIs used in the baselines aim to provide an abstraction over the streaming perception framework, which allows participants to solely focus on developing the algorithm itself and also ensures a fair competition for the challenge.
 
 ![benchmark-toolkit](doc/img/benchmark-toolkit.png)
