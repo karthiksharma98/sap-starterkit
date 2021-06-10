@@ -97,7 +97,9 @@ Note that since the benchmark dataset Argoverse-HD is annotated according to COC
 
 The parameters for the various scripts are explained below:
 
-1. `start_toolkit.sh`: This script is used to run the benchmark toolkit daemon process and must be run before running anything else. It initializes two processes - an ImageService process to stream images to your application and a ResultService process to receive output from your application. The various parameters are:
+1. `run.sh`: This is an all-in-one script used to run both the benchmark toolkit daemon and the illustrative examples. It should be run using either the command `bash run.sh det` or `bash run.sh forecast`. The parameters in this script are the same as those in the scripts described below.
+
+2. `start_toolkit.sh`: This script is used to run the benchmark toolkit daemon process and must be run before running anything else. It initializes two processes - an ImageService process to stream images to your application and a ResultService process to receive output from your application. The various parameters are:
 
 - `--data-root`: This provides the root directory of the dataset.
 - `--annot-path`: This provides the annotations file. Annotations for the training and validation sets are provided (see dataset setup instructions [here](https://github.com/mtli/sAP/blob/master/doc/data_setup.md)). *Annotations for the test set will not be released. In this case, this parameter provides the file containing meta-info about the dataset in COCO format, i.e., a .json file similar to the validation and training annotations, but without the actual annotations*.
@@ -124,7 +126,7 @@ The parameters for the various scripts are explained below:
 
 ## Setup verification
 
-If you have set up correctly, running `start_toolkit.sh` followed by  `start_det_baseline.sh` and then typing `evaluate results.json` on the benchmark toolkit CLI once the second script has finished running should be able to get you an AP of ~15.5 on the validation set: (This number may vary based on hardware. We obtain this baseline on a Tesla V100 GPU on an AWS p3.2x instance, for Mask RCNN FPN R50 with input scale 1.0).
+If you have set up correctly, running either `run.sh` or `start_toolkit.sh` followed by  `start_det_baseline.sh`, and then typing `evaluate results.json` on the benchmark toolkit CLI once it has finished running should be able to get you an AP of ~15.5 on the validation set: (This number may vary based on hardware. We obtain this baseline on a Tesla V100 GPU on an AWS p3.2x instance, for Mask RCNN FPN R50 with input scale 1.0).
 ```
 Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.155
 ```
