@@ -56,17 +56,17 @@ def inference_detector(model, img, gpu_pre=True, numpy_res=True, decode_mask=Tru
     # assume img has RGB channel ordering instead of BGR
     cfg = model.cfg
     if gpu_pre:
-        img_transform = ImageTransformGPU(
-            size_divisor=cfg.data.test.size_divisor, **cfg.img_norm_cfg)
+        img_transform = ImageTransformGPU()
+            #size_divisor=cfg.data.test.size_divisor, **cfg.img_norm_cfg) #TODO
     else:
-        img_transform = ImageTransform(
-            size_divisor=cfg.data.test.size_divisor, **cfg.img_norm_cfg)
+        img_transform = ImageTransform()
+            #size_divisor=cfg.data.test.size_divisor, **cfg.img_norm_cfg)
 
     device = next(model.parameters()).device  # model device
     with torch.no_grad():
-        data = _prepare_data(img, img_transform, cfg, device)
+        data = _prepare_data(img, img_transform, cfg, device)# TODO
         result = model(return_loss=False, rescale=True, numpy_res=numpy_res, decode_mask=decode_mask, **data) 
-        zc_cfg = cfg.data.test.zoom_crop
+        zc_cfg = cfg.data.test.zoom_crop # TODO
         if zc_cfg is not None and len(result[0]):
             result[0][:, [1, 3]] += zc_cfg['y']
     return result
